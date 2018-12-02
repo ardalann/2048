@@ -3,7 +3,7 @@
  */
 const initOnLoad = true;
 const maxInitAttempts = 100;
-const delayBetweenMoves = 111150; // ms
+const delayBetweenMoves = 150; // ms
 
 /**
  * Variables and constants
@@ -37,9 +37,14 @@ const init = () => {
 
 const play = board => {
   const nextMove = getNextMove(board);
-  simulate(keyMappings[nextMove]);
 
-  setTimeout(() => play(readBoard()), delayBetweenMoves);
+  if (!nextMove) {
+    console.log("Game over!");
+  } else {
+    simulate(keyMappings[nextMove]);
+
+    setTimeout(() => play(readBoard()), delayBetweenMoves);
+  }
 };
 
 const readBoard = () => {
@@ -64,9 +69,8 @@ const readBoard = () => {
 
 const getNextMove = board => {
   const possibleMoves = getPossibleMoves(board);
-  console.log("possibleMoves", possibleMoves);
 
-  return "ArrowLeft";
+  return possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
 };
 
 const findLastIndex = (arr, callback) => {
@@ -115,7 +119,6 @@ const isArrowRightPossible = board =>
   });
 
 const getPossibleMoves = board => {
-  console.log("getPossibleMoves", board);
   const possibleMoves = [];
 
   if (isArrowLeftPossible(board)) {
